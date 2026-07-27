@@ -1,0 +1,12 @@
+{
+  "name": "shangan-dashboard",
+  "version": "1.0.0",
+  "description": "佳宁·上岸作战台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

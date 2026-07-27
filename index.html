@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>佳宁 · 上岸作战台</title>
+<style>
+:root{
+  --bg:#f6f7fb; --card:#ffffff; --ink:#1c2230; --sub:#6b7280; --line:#eceef3;
+  --brand:#2f5fe0; --brand-soft:#eaf0ff;
+  --t1:#0f6e56; --t1bg:#e1f5ee; --t2:#185fa5; --t2bg:#e6f1fb;
+  --t3:#854f0b; --t3bg:#faeeda; --t4:#5f5e5a; --t4bg:#f1efe8;
+  --rest:#d4537e; --restbg:#fbeaf0; --ok:#1d9e75; --danger:#e24b4a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px 90px;}
+header.hero{padding:20px 4px 8px;}
+.hi{font-size:13px;color:var(--sub);}
+.hi b{color:var(--brand);}
+.title{font-size:22px;font-weight:700;margin:2px 0 14px;letter-spacing:-.3px;}
+.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cd{background:var(--card);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(20,30,60,.05);}
+.cd .lab{font-size:12px;color:var(--sub);}
+.cd .big{font-size:19px;font-weight:700;margin-top:3px;line-height:1.15;}
+.cd .days{font-size:12px;color:var(--brand);font-weight:600;margin-top:3px;}
+.cd.urgent .days{color:var(--danger);}
+section{margin-top:22px;}
+.sec-h{font-size:16px;font-weight:700;margin:0 4px 10px;display:flex;align-items:center;gap:7px;}
+.sec-h .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);}
+.sec-sub{font-size:12px;color:var(--sub);margin:-6px 4px 12px;}
+.tier{background:var(--card);border-radius:14px;padding:13px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(20,30,60,.05);}
+.tier .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:8px;}
+.tier h4{margin:0 0 6px;font-size:14px;}
+.tier ul{margin:0;padding-left:16px;}
+.tier li{font-size:13px;line-height:1.7;color:#333;}
+.tier li b{color:var(--ink);}
+.t1 .tag{background:var(--t1bg);color:var(--t1);} .t1{border-left:3px solid var(--t1);}
+.t2 .tag{background:var(--t2bg);color:var(--t2);} .t2{border-left:3px solid var(--t2);}
+.t3 .tag{background:var(--t3bg);color:var(--t3);} .t3{border-left:3px solid var(--t3);}
+.t4 .tag{background:var(--t4bg);color:var(--t4);} .t4{border-left:3px solid var(--t4);}
+.tl-item{background:var(--card);border-radius:14px;padding:0;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(20,30,60,.05);}
+.tl-head{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.tl-mon{font-size:15px;font-weight:700;}
+.tl-focus{font-size:12px;color:var(--sub);margin-top:2px;}
+.tl-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--brand-soft);color:var(--brand);white-space:nowrap;}
+.tl-body{padding:0 14px 12px;display:none;}
+.tl-body.open{display:block;}
+.chk{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.5;cursor:pointer;}
+.chk input{margin:0;width:19px;height:19px;flex:0 0 auto;margin-top:1px;accent-color:var(--brand);}
+.chk .txt{flex:1;}
+.chk .txt small{display:block;color:var(--sub);font-size:11px;margin-top:1px;}
+.chk.done .txt{color:#aab;text-decoration:line-through;}
+.rest{background:var(--restbg);border:1px dashed var(--rest);}
+.rest .tl-mon{color:var(--rest);}
+.rest .tl-badge{background:#fff;color:var(--rest);border:1px solid var(--rest);}
+.prog-wrap{background:var(--card);border-radius:14px;padding:13px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(20,30,60,.05);}
+.prog-bar{height:9px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:8px;}
+.prog-fill{height:100%;background:var(--ok);width:0;transition:width .4s;}
+.prog-lab{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);}
+.q-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.q-table td{padding:9px 6px;border-top:1px solid var(--line);vertical-align:top;}
+.q-table tr:first-child td{border-top:none;}
+.q-mod{font-weight:700;white-space:nowrap;}
+.stars{color:#e0a021;font-size:11px;}
+.tipbox{background:var(--brand-soft);border-radius:12px;padding:11px 13px;font-size:12.5px;color:#2a3d8f;line-height:1.6;margin-top:10px;}
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);display:flex;max-width:520px;margin:0 auto;z-index:50;}
+.tabbar a{flex:1;text-align:center;padding:9px 0 calc(9px + env(safe-area-inset-bottom));font-size:11px;color:var(--sub);text-decoration:none;}
+.tabbar a .ic{display:block;font-size:18px;margin-bottom:1px;}
+.tabbar a.act{color:var(--brand);font-weight:600;}
+.foot{text-align:center;font-size:11px;color:#aab;margin-top:20px;line-height:1.6;}
+.reset{display:block;margin:14px auto 0;background:none;border:1px solid var(--line);color:var(--sub);
+  font-size:12px;padding:7px 16px;border-radius:20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hi">你好，<b>佳宁</b> · 北师大心理测量 · 党员 · 目标：上岸概率最大化</div>
+  <div class="title">上岸作战台 🧭</div>
+  <div class="cd-grid" id="countdowns"></div>
+</header>
+
+<section id="track">
+  <div class="sec-h"><span class="dot"></span>赛道优先级（按你的画像）</div>
+  <div class="sec-sub">你同时满足党员+满一年班长+多项校级荣誉，选调门槛"三选一"全中——这是你最大的杀器。</div>
+
+  <div class="tier t1">
+    <span class="tag">第一梯队 · 全力主攻</span>
+    <ul>
+      <li><b>定向选调（北师大专项）</b>：10月中旬各省陆续出公告，11月中—12月中笔试，仅本校竞争，考行测+申论。<b>你的主战场。</b></li>
+      <li><b>常规选调（各省统一）</b>：与省考同期或稍早，同样吃党员/干部/荣誉，题型与国省考相通。</li>
+      <li><b>人才引进</b>：新一线城市事业编/参公，硕士+党员优先，多地有心理测评/数据分析岗，专业对口。</li>
+    </ul>
+  </div>
+  <div class="tier t2">
+    <span class="tag">第二梯队 · 重点兼报</span>
+    <ul>
+      <li><b>国考</b>：10月中报名、11月底笔试，市地级及以下招应届，与选调错峰，复习共享。</li>
+      <li><b>省考联考</b>：次年3月，覆盖北方+新一线所在省，是选调失手后的主接盘。</li>
+    </ul>
+  </div>
+  <div class="tier t3">
+    <span class="tag">第三梯队 · 低成本兜底</span>
+    <ul>
+      <li><b>军队文职</b>：11月初报名、12月中笔试，公共科目≈行测+公基，可无痛兼报。</li>
+      <li><b>事业单位/高校招聘</b>：辅导员、心理教师、学工、数据岗，你专业极对口，全年滚动。</li>
+    </ul>
+  </div>
+  <div class="tier t4">
+    <span class="tag">第四梯队 · 顺手投，不额外备考</span>
+    <ul>
+      <li><b>国家电网</b>（11月中网申、12月初笔试）、<b>中石油/中石化</b>（9月中网申）：主招工科，心理岗极少。</li>
+      <li><b>烟草</b>（各省11月陆续出）：少量综合管理/党群岗可投，稳定但竞争大，网申即可。</li>
+    </ul>
+  </div>
+</section>
+
+<section id="line">
+  <div class="sec-h"><span class="dot"></span>逐月时间线（点击展开勾选）</div>
+  <div class="sec-sub">红色为你的回家休息期，已锁定不排任务。其余每月一场硬仗，错峰不撞车。</div>
+  <div id="timeline"></div>
+</section>
+
+<section id="xingce">
+  <div class="sec-h"><span class="dot"></span>行测提分（目标：从波动66-73 → 稳定72-75）</div>
+  <div class="sec-sub">你不缺能力，缺的是稳定的做题节奏。核心是固定顺序+卡表+数量战略放弃。</div>
+  <div class="prog-wrap">
+    <div class="prog-lab"><span>当前均值 ≈69</span><span>目标 72–75（稳定）</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:82%;background:#e0a021;"></div></div>
+    <div style="font-size:11px;color:var(--sub);margin-top:6px;">再抬 3-5 分不是靠冲高分，而是把 66 的下限提上来。</div>
+  </div>
+  <div class="tier" style="border-left:3px solid var(--brand);">
+    <table class="q-table">
+      <tr><td class="q-mod">资料分析<div class="stars">★★★★★</div></td><td>送分块，目标≥95%正确、限时25分钟。你速算好，务必拿满。</td></tr>
+      <tr><td class="q-mod">判断推理<div class="stars">★★★★★</div></td><td>图形+逻辑规律性强，刷题稳定提分；定义判断放慢读题即得分。</td></tr>
+      <tr><td class="q-mod">言语理解<div class="stars">★★★★</div></td><td>理论已过，靠高频词+行文脉络提正确率，每天30题保手感，控30分钟。</td></tr>
+      <tr><td class="q-mod">数量关系<div class="stars">★★★</div></td><td><b>战略放弃！</b>只攻工程/行程/几何/必然性等易得分题，其余10秒蒙同一选项。这是稳下限的关键。</td></tr>
+      <tr><td class="q-mod">常识判断<div class="stars">★★</div></td><td>投产比最低，碎片时间刷时政+你的政治理论笔记，每题≤40秒不纠结。</td></tr>
+    </table>
+  </div>
+  <div class="tipbox">📌 固定做题顺序：<b>资料 → 判断 → 言语 → 常识 → 数量</b>。每块卡表，数量永远放最后并果断取舍。把节奏练成肌肉记忆，波动自然消失。</div>
+</section>
+
+<section id="daily">
+  <div class="sec-h"><span class="dot"></span>每日固定动作（可勾选，每天重置靠自觉）</div>
+  <div id="dailylist"></div>
+</section>
+
+<div class="foot">
+  数据锚定 2026 届实际公告，2027 届时间为"预计"，请以官方为准。<br>
+  进度自动保存在本机浏览器。建议：iPhone 用 Safari 打开 → 分享 → 添加到主屏幕。
+  <button class="reset" onclick="resetAll()">清空所有勾选进度</button>
+</div>
+
+</div>
+
+<nav class="tabbar">
+  <a href="#track" class="act"><span class="ic">🎯</span>赛道</a>
+  <a href="#line"><span class="ic">📅</span>时间线</a>
+  <a href="#xingce"><span class="ic">📈</span>行测</a>
+  <a href="#daily"><span class="ic">✅</span>每日</a>
+</nav>
+
+<script>
+const KEY="jn_shangan_v1";
+const store=JSON.parse(localStorage.getItem(KEY)||"{}");
+function save(){localStorage.setItem(KEY,JSON.stringify(store));}
+
+const events=[
+  {name:"军队文职笔试", date:"2026-12-13"},
+  {name:"国考笔试", date:"2026-11-29"},
+  {name:"北师大定向选调（首批）", date:"2026-11-14"},
+  {name:"省考联考", date:"2027-03-27"}
+];
+function renderCountdown(){
+  const now=new Date(); now.setHours(0,0,0,0);
+  const box=document.getElementById("countdowns");
+  const sorted=events.map(e=>{const d=new Date(e.date);return {...e,d,days:Math.ceil((d-now)/864e5)};})
+    .filter(e=>e.days>=0).sort((a,b)=>a.days-b.days);
+  box.innerHTML=sorted.slice(0,4).map(e=>`
+    <div class="cd ${e.days<=30?'urgent':''}">
+      <div class="lab">${e.name}</div>
+      <div class="big">${e.d.getMonth()+1}月${e.d.getDate()}日</div>
+      <div class="days">还剩 ${e.days} 天</div>
+    </div>`).join("");
+}
+renderCountdown();
+
+const timeline=[
+  {mon:"7月下 · 现在", badge:"打基础", focus:"稳住行测节奏 · 摸清定向选调省份", items:[
+    {t:"每天3套限时模块练习，固定做题顺序并卡表", s:"重点：资料+判断+言语"},
+    {t:"整理目标省份清单（北方+中东部新一线），做成表格", s:"如济南/青岛/西安/郑州/成都/杭州/苏州/合肥/长沙"},
+    {t:"申论继续跟白鹭+袁东，袁东小题已完成，进入大作文", s:""},
+    {t:"确认北师大就业中心选调生群/公众号，不漏公告", s:""}
+  ]},
+  {mon:"8月上（8/1–8/6）", badge:"冲刺前", focus:"回家前把行测下限抬到70+", items:[
+    {t:"完成3套完整行测模考，复盘错题本", s:"目标：均分稳定≥71"},
+    {t:"申论大作文每周2篇，套用政治理论素材", s:""}
+  ]},
+  {mon:"8/7 – 8/15 · 回家休息", rest:true, badge:"休息 · 已锁定", focus:"陪家人、彻底放松，不安排任何备考任务", items:[
+    {t:"这段时间就好好休息，不排学习计划 🌿", s:"充电是为了后面更能打"}
+  ]},
+  {mon:"8月下（8/16–8/31）", badge:"恢复+全职冲刺", focus:"进入全职备考节奏 · 结合你的8-9月冲刺计划表", items:[
+    {t:"恢复每日模考节奏，行测目标均分72+", s:""},
+    {t:"启动人才引进岗位监测（多地8-9月发公告）", s:"关注新一线城市引进公告"},
+    {t:"申论保持每周2篇，开始积累面试素材（你的实习/学生工作案例）", s:""}
+  ]},
+  {mon:"9月", badge:"秋招开闸", focus:"国企网申季 + 选调冲刺", items:[
+    {t:"9月中：中石油/中石化网申（顺手投，不额外备考）", s:"job.sinopec.com"},
+    {t:"六大行、国家能源集团等网申（可选，广撒网）", s:""},
+    {t:"行测进入真题套卷阶段，每周3套完整卷", s:""},
+    {t:"关注各省常规选调预告", s:""}
+  ]},
+  {mon:"10月", badge:"报名高峰", focus:"国考报名 + 定向选调公告陆续出", items:[
+    {t:"10月中旬：国考报名（bm.scs.gov.cn），选市地级及以下应届岗", s:"错峰选调，务必报"},
+    {t:"北师大各省定向选调公告陆续发布，逐省对照职位表选报", s:"重点盯北方+新一线省份"},
+    {t:"准备选调报名推荐表（院系党章+就业中心公章），提前问流程", s:"党员/干部/荣誉证明材料备齐"},
+    {t:"烟草、国家电网公告陆续出，按需网申", s:""}
+  ]},
+  {mon:"11月", badge:"笔试月①", focus:"选调笔试 + 军队文职报名 + 国考笔试", items:[
+    {t:"11月初：军队文职报名（81rc.81.cn），选公共科目+对口专业", s:"11/3–11/9 报名"},
+    {t:"11月中：北师大定向选调首批笔试（行测+申论）", s:"你的主战场，全力以赴"},
+    {t:"11月中：国家电网网申截止（如投）", s:""},
+    {t:"11月底：国考笔试（11/29–30）", s:"与选调复习共享"}
+  ]},
+  {mon:"12月", badge:"笔试月②", focus:"军队文职笔试 + 各省选调笔试 + 面试启动", items:[
+    {t:"12月上：国家电网笔试（如投）", s:""},
+    {t:"12月中：军队文职全军统一笔试（12/13前后）", s:""},
+    {t:"部分省份选调笔试在12月（如广西12/13、云南12/6）", s:"按报考省份看准考证"},
+    {t:"选调/国考出成绩后立即启动面试准备", s:"结构化面试+你的实习案例库"}
+  ]},
+  {mon:"次年1–2月", badge:"面试+省考准备", focus:"选调面试 + 寒假省考冲刺", items:[
+    {t:"选调/国考进面则全力准备结构化面试", s:"多刷题+模拟"},
+    {t:"寒假系统刷省考真题，为3月联考蓄力", s:""},
+    {t:"事业单位/高校辅导员岗滚动关注并投递", s:"专业对口，兜底"}
+  ]},
+  {mon:"次年3月", badge:"省考联考", focus:"选调失手的主接盘", items:[
+    {t:"省考联考笔试（多在3月下旬），报北方+新一线所在省", s:""},
+    {t:"人才引进春季批次持续关注", s:""}
+  ]}
+];
+
+function renderTimeline(){
+  const box=document.getElementById("timeline");
+  box.innerHTML=timeline.map((m,mi)=>{
+    const items=m.items.map((it,ii)=>{
+      const id=`tl_${mi}_${ii}`;
+      const ck=store[id]?"checked":"";
+      const dn=store[id]?"done":"";
+      return `<label class="chk ${dn}" ><input type="checkbox" data-id="${id}" ${ck}>
+        <span class="txt">${it.t}${it.s?`<small>${it.s}</small>`:""}</span></label>`;
+    }).join("");
+    const done=m.items.filter((_,ii)=>store[`tl_${mi}_${ii}`]).length;
+    return `<div class="tl-item ${m.rest?'rest':''}">
+      <div class="tl-head" onclick="toggleBody(${mi})">
+        <div><div class="tl-mon">${m.mon}</div><div class="tl-focus">${m.focus}</div></div>
+        <div class="tl-badge">${m.badge}${m.rest?'':` · ${done}/${m.items.length}`}</div>
+      </div>
+      <div class="tl-body" id="body_${mi}">${items}</div>
+    </div>`;
+  }).join("");
+  bindChecks();
+}
+function toggleBody(i){document.getElementById("body_"+i).classList.toggle("open");}
+
+const daily=[
+  {t:"资料分析 1 篇（限时，正确率≥95%）", s:"送分块，天天练"},
+  {t:"判断推理 20 题（图形+逻辑）", s:""},
+  {t:"言语理解 30 题（控30分钟）", s:""},
+  {t:"数量关系：只做高频题型 5 题", s:"练取舍，不贪多"},
+  {t:"常识/时政 碎片时间刷 15 分钟", s:"用政治理论笔记"},
+  {t:"申论：小题练习 或 大作文素材积累", s:""}
+];
+function renderDaily(){
+  const box=document.getElementById("dailylist");
+  const items=daily.map((it,ii)=>{
+    const id=`dy_${ii}`;const ck=store[id]?"checked":"";const dn=store[id]?"done":"";
+    return `<label class="chk ${dn}"><input type="checkbox" data-id="${id}" ${ck}>
+      <span class="txt">${it.t}${it.s?`<small>${it.s}</small>`:""}</span></label>`;
+  }).join("");
+  const done=daily.filter((_,ii)=>store[`dy_${ii}`]).length;
+  box.innerHTML=`<div class="prog-wrap">
+      <div class="prog-lab"><span>今日完成</span><span>${done}/${daily.length}</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="dfill"></div></div>
+    </div>
+    <div class="tier" style="border-left:3px solid var(--ok);">${items}</div>`;
+  document.getElementById("dfill").style.width=(done/daily.length*100)+"%";
+  bindChecks();
+}
+
+function bindChecks(){
+  document.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.onchange=()=>{
+      const id=cb.dataset.id;
+      if(cb.checked) store[id]=1; else delete store[id];
+      save();
+      if(id.startsWith("dy_")) renderDaily(); else renderTimeline();
+    };
+  });
+}
+
+function resetAll(){
+  if(confirm("确定清空所有勾选进度？此操作不可恢复。")){
+    for(const k in store) delete store[k];
+    save(); renderTimeline(); renderDaily();
+  }
+}
+
+const tabs=document.querySelectorAll('.tabbar a');
+tabs.forEach(a=>a.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('act'));a.classList.add('act');}));
+
+renderTimeline();
+renderDaily();
+</script>
+</body>
+</html>
